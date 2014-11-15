@@ -25,7 +25,7 @@ LPConverter::~LPConverter()
 {
 }
 
-void LPConverter::convertToLP(const std::string &inputFile, const char delimiter, const std::string &outputFile)
+void LPConverter::convertToLP(const std::string &inputFile, const char delimiter, int k, const std::string &outputFile)
 {
 	DoubleMat inputPointsMatrix;
 	file2DoubleMat(inputFile, delimiter).swap(inputPointsMatrix);
@@ -45,7 +45,7 @@ void LPConverter::convertToLP(const std::string &inputFile, const char delimiter
 	}
 
 	std::cout << "Writing results to " << outputFile.c_str() << "..." << std::endl;
-    writeLPToFile(os, costs);
+    writeLPToFile(os, costs, k);
 
 	os.close();
 }
@@ -67,7 +67,7 @@ DoubleMat LPConverter::calculateLPCosts(const DoubleMat& inputPoints)
 	return costs;
 }
 
-void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs)
+void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k)
 {
     int n = costs[0].size();
 
@@ -95,11 +95,60 @@ void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs)
     // restrictions header
     os << "Subject to" << std::endl;
 
-    // restrictions: each city connected to at least one facility: sum x_ij >= 1
+    // restrictions: each city connected to at least one facility: foreach j in C sum x_ij >= 1
+    for (int j = 0; j < n; j++)
+    {
+        os << "City_" << j << "_connected: ";
+        for (int i = 0; i < n; i++)
+        {
+            os << "xi" << i << "" << "j" << j;
 
-    // restrictions:
+            if (i != n-1)
+            {
+                os << " + ";
+            }
+            else
+            {
+                os << " >= 1";
+            }
+        }
+        os << std::endl;
+    }
 
-    // non-negativity relaxed restrictions
+    // restrictions: connected facilities must be open: foreach i in F, j in C y_i - x_ij >= 0
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            os << "Facility_" << i << "_open_rsp_city_" << j << ": " << "yi" <<  i << " - " << "xi" << i << "j" << j << " >= 0" << std::endl;
+        }
+    }
+
+    // restrictions: exactly k facilities are opened: sum -y_i >= -k
+    os << "Exactly_k_facilities_opened: ";
+    for (int i = 0; i < n-1; i++)
+    {
+        os << "-yi" << i << " + ";
+    }
+    os << "yi" << n-1;
+    os << " >= " << "-" << k << std::endl;
+
+    // relaxed ILP-restrictions i.e. non-negativity: foreach i in F, j in C x_ij >= 0
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            os << "xi" << i << "j" << j << " >= 0" << std::endl;
+        }
+    }
+    // foreach i in F y_i >= 0
+    for (int i = 0; i < n; i++)
+    {
+        os << "yi" << i << " >= 0" << std::endl;
+    }
+
+    // footer
+    os << "End" << std::endl;
 }
 
 DoubleMat LPConverter::file2DoubleMat(const std::string &file, const char delimiter)
