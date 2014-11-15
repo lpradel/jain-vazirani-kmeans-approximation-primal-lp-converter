@@ -52,7 +52,9 @@ void LPConverter::convertToLP(const std::string &inputFile, const char delimiter
 
 DoubleMat LPConverter::calculateLPCosts(const DoubleMat& inputPoints)
 {
-	int n = inputPoints[0].size();
+	int n = inputPoints.size();
+
+    std::cout <<  "N: " << n << std::endl;
 
 	DoubleMat costs(n, std::vector<double>(n, 0));
 
