@@ -25,16 +25,15 @@ typedef std::vector<double> DoubleVec;
 class LPConverter
 {
 public:
-	virtual ~LPConverter();
-
-	static void convertToLP(const std::string &inputFile, const char delimiter, int k, const std::string &outputFile);
+    virtual ~LPConverter();
+    static void convertToLP(const std::string &inputFile, const char delimiter, int k, const std::string &outputFile);
 
 private:
-	LPConverter();
-	static DoubleMat calculateLPCosts(const DoubleMat& inputPoints);
-	static DoubleMat file2DoubleMat(const std::string &file, const char delimiter);
+    LPConverter();
+    static DoubleMat calculateLPCosts(const DoubleMat& inputPoints);
+    static DoubleMat file2DoubleMat(const std::string &file, const char delimiter);
     static void writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k);
-	static double string2double(const std::string &s);
+    static double string2double(const std::string &s);
     static double squaredEuclideanDistance(const DoubleVec& v1, const DoubleVec& v2);
 };
 

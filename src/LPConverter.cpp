@@ -27,27 +27,27 @@ LPConverter::~LPConverter()
 
 void LPConverter::convertToLP(const std::string &inputFile, const char delimiter, int k, const std::string &outputFile)
 {
-	DoubleMat inputPointsMatrix;
-	file2DoubleMat(inputFile, delimiter).swap(inputPointsMatrix);
+    DoubleMat inputPointsMatrix;
+    file2DoubleMat(inputFile, delimiter).swap(inputPointsMatrix);
     DoubleMat costs;
     calculateLPCosts(inputPointsMatrix).swap(costs);
 
-	std::ofstream os;
-	os.open(outputFile.c_str());
+    std::ofstream os;
+    os.open(outputFile.c_str());
 
-	if (os.fail())
-	{
-	    throw std::invalid_argument("File " + outputFile + " cannot be opened or created!");
-	}
-	if (!os.is_open())
-	{
-	    throw std::invalid_argument("File " + outputFile + " cannot be opened or created!");
-	}
+    if (os.fail())
+    {
+        throw std::invalid_argument("File " + outputFile + " cannot be opened or created!");
+    }
+    if (!os.is_open())
+    {
+        throw std::invalid_argument("File " + outputFile + " cannot be opened or created!");
+    }
 
-	std::cout << "Writing results to " << outputFile.c_str() << "..." << std::endl;
+    std::cout << "Writing results to " << outputFile.c_str() << "..." << std::endl;
     writeLPToFile(os, costs, k);
 
-	os.close();
+    os.close();
 }
 
 DoubleMat LPConverter::calculateLPCosts(const DoubleMat& inputPoints)

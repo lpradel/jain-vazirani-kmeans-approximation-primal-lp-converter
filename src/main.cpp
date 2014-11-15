@@ -11,10 +11,10 @@ int main(int argc, char* argv[])
         std::cout << "Usage: inputFile delimiter k outputFile" << std::endl;
     }
 
-	std::string inputFile(argv[1]);
+    std::string inputFile(argv[1]);
     std::string delimiter_string(argv[2]);
     std::string k_string(argv[3]);
-	std::string outputFile(argv[4]);
+    std::string outputFile(argv[4]);
 
     int k = 0;
     std::istringstream ss(k_string);
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     std::cout << "k: " << k << std::endl;
     std::cout << "outputFile: " << outputFile.c_str() << std::endl;
 
-	ls2::LPConverter::convertToLP(inputFile, delimiter, k, outputFile);
+    ls2::LPConverter::convertToLP(inputFile, delimiter, k, outputFile);
 
     return 0;
 }
