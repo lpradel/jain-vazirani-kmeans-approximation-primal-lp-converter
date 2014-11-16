@@ -100,7 +100,7 @@ void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k
     // restrictions: each city connected to at least one facility: foreach j in C sum x_ij >= 1
     for (int j = 0; j < n; j++)
     {
-        os << "City_" << j << "_connected: ";
+        //os << "City_" << j << "_connected: ";
         for (int i = 0; i < n; i++)
         {
             os << "xi" << i << "" << "j" << j;
@@ -122,12 +122,13 @@ void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k
     {
         for (int j = 0; j < n; j++)
         {
-            os << "Facility_" << i << "_open_rsp_city_" << j << ": " << "yi" <<  i << " - " << "xi" << i << "j" << j << " >= 0" << std::endl;
+            //os << "Facility_" << i << "_open_rsp_city_" << j << ": ";
+            os << "yi" <<  i << " - " << "xi" << i << "j" << j << " >= 0" << std::endl;
         }
     }
 
     // restrictions: exactly k facilities are opened: sum -y_i >= -k
-    os << "Exactly_k_facilities_opened: ";
+    //os << "Exactly_k_facilities_opened: ";
     for (int i = 0; i < n; i++)
     {
         os << "-yi" << i << " ";
