@@ -128,11 +128,10 @@ void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k
 
     // restrictions: exactly k facilities are opened: sum -y_i >= -k
     os << "Exactly_k_facilities_opened: ";
-    for (int i = 0; i < n-1; i++)
+    for (int i = 0; i < n; i++)
     {
-        os << "-yi" << i << " + ";
+        os << "-yi" << i << " ";
     }
-    os << "yi" << n-1;
     os << " >= " << "-" << k << std::endl;
 
     // relaxed ILP-restrictions i.e. non-negativity: foreach i in F, j in C x_ij >= 0
