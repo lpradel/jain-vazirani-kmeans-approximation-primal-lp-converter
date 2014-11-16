@@ -52,21 +52,21 @@ void LPConverter::convertToLP(const std::string &inputFile, const char delimiter
 
 DoubleMat LPConverter::calculateLPCosts(const DoubleMat& inputPoints)
 {
-	int n = inputPoints.size();
-
+    int n = inputPoints.size();
+    
     std::cout <<  "N: " << n << std::endl;
 
-	DoubleMat costs(n, std::vector<double>(n, 0));
+    DoubleMat costs(n, std::vector<double>(n, 0));
 
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			costs[i][j] = squaredEuclideanDistance(inputPoints[i], inputPoints[j]);
-		}
-	}
+    for (int i = 0; i < n; i++)
+    {
+	    for (int j = 0; j < n; j++)
+	    {
+		    costs[i][j] = squaredEuclideanDistance(inputPoints[i], inputPoints[j]);
+	    }
+    }
 
-	return costs;
+    return costs;
 }
 
 void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k)
@@ -82,7 +82,7 @@ void LPConverter::writeLPToFile(std::ofstream& os, const DoubleMat& costs, int k
     {
         for (int j = 0; j < n; j++)
         {
-            os << costs[i][j] << "xi" << i << "j" << j;
+            os << std::fixed << costs[i][j] << "xi" << i << "j" << j;
 
             if ( (i == n-1) && (j == n-1) )
             {
